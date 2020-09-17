@@ -12,6 +12,8 @@ import DocumentSnapshot = firestore.DocumentSnapshot;
 
 const ALGOLIA_ID = functions.config().algolia.id;
 const ALGOLIA_ADMIN_KEY = functions.config().algolia.key;
+// issues key fro the search restriction
+const ALGOLIA_SEARCH_KEY = functions.config().algolia.search_key;
 const ALGOLIA_REQUESTS_INDEX = functions.config().algolia.requests_index;
 const ALGOLIA_UNAUTHENTICATEDREQUESTS_INDEX =
   config.get('env') === 'test' ? 'unauthenticatedRequests_test' : functions.config().algolia.unauthenticated_requests_index;

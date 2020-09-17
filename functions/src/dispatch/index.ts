@@ -1,6 +1,7 @@
 import * as flatten from 'flat';
 
 import { sendToTopic } from './fcm';
+import { config as AppConfig } from '../config/config';
 import { sendSMS } from './twilio';
 
 export const notifyService = (config: Record<string, any>): Promise<void> => {
@@ -12,7 +13,9 @@ export const notifyService = (config: Record<string, any>): Promise<void> => {
       notification.title = `${config.performedOnEntity.entity} ${config.action}`;
       notification.body = `Your ${config.performedOnEntity} was ${config.action}`;
       // Throw away the data since we don't need it using a hanging .then().
-      operations.push(sendSMS(`Your ${config.performedOnEntity} was ${config.action}`, config.actor.mobileNumber).then());
+      if (AppConfig.get('env') !== 'test') {
+        operations.push(sendSMS(`Your ${config.performedOnEntity} was ${config.action}`, config.actor.mobileNumber).then());
+      }
     }
     let data = { ...config };
     delete data.actor;
