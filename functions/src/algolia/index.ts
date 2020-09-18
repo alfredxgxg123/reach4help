@@ -7,6 +7,7 @@ import { UnauthenticatedRequest } from '../models/UnauthenticatedRequests';
 import { GeneralRequest } from '../models/GeneralRequests';
 import { config } from '../config/config';
 import { Offer, OfferStatus } from '../models/offers';
+import { object } from 'firebase-functions/lib/providers/storage';
 
 import DocumentSnapshot = firestore.DocumentSnapshot;
 
@@ -176,4 +177,29 @@ export const removeObjectFromIndices = async (objectId: string) => {
         return Promise.resolve();
       }),
   ]);
+};
+
+/**
+ * To remove a single object based on the provided objectID from algolia indices
+ * The object will be removed from both the indices for authenticated and unauthenticated requests
+ *
+ * @param index: The apiKey 
+ */
+
+export const getAuthenticatedKey = async (index: string) => {
+  const currentUserID = 1;
+
+  const publicKey = await ALGOLIA_SEARCH_KEY.generateSecuredApiKey(
+    'YourSearchOnlyAPIKey', // A search key that you keep private
+    {
+      filters: `watch_list_of:${currentUserID}`,
+    },
+  );
+
+  const authenitcatedObject = {
+    key: publicKey,
+    usedIndex: index,
+  };
+
+  return authenitcatedObject;
 };
