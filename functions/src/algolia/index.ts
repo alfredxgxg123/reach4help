@@ -180,13 +180,13 @@ export const removeObjectFromIndices = async (objectId: string) => {
 };
 
 /**
- * To remove a single object based on the provided objectID from algolia indices
- * The object will be removed from both the indices for authenticated and unauthenticated requests
+ * To restricts tehh search key to the index for generalRequests only
+ * The returned object contains the restrcted serach key and value of the index being used
  *
- * @param index: The apiKey 
+ * @param searchKey: The search key to the index for generalRequest
  */
 
-export const getAuthenticatedKey = async (index: string) => {
+export const getAuthenticatedKey = async (searchKey: string) => {
   const currentUserID = 1;
 
   const publicKey = await ALGOLIA_SEARCH_KEY.generateSecuredApiKey(
@@ -197,8 +197,8 @@ export const getAuthenticatedKey = async (index: string) => {
   );
 
   const authenitcatedObject = {
-    key: publicKey,
-    usedIndex: index,
+    key: searchKey,
+    indexValue: publicKey,
   };
 
   return authenitcatedObject;
